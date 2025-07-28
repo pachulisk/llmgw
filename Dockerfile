@@ -21,4 +21,4 @@ ENV PATH=/home/app/.local/bin:$PATH
 EXPOSE 8000
 
 # 启动命令（使用uvicorn运行应用，支持多线程和自动重载）
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+CMD ["python", "main.py"]
