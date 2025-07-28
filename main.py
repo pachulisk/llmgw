@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from litellm import completion
+from dotenv import load_dotenv
+load_dotenv()
 import os
 
 app = FastAPI(title="DeepSeek 流式对话接口", version="1.0")
