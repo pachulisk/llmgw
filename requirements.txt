@@ -4,3 +4,4 @@ litellm
 uvicorn==0.24.0  # 明确指定uvicorn
 fastapi
 python-dotenv
+supabase

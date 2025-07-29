@@ -10,6 +10,10 @@ FROM base
 # copy only the dependencies installation from the 1st stage image
 COPY --from=builder /root/.local /root/.local
 COPY main.py /app/main.py
+COPY supa.py /app/supa.py
+COPY config.py /app/config.py
+COPY __init__.py /app/__init__.py
+
 # COPY common /app/common
 # COPY bot.py /app/bot.py
 WORKDIR /app

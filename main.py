@@ -3,6 +3,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from litellm import completion
 from dotenv import load_dotenv
+from supa import supabase
 load_dotenv()
 import os
 
@@ -90,6 +91,48 @@ def chat(request: ChatRequest):
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"调用模型时发生错误: {str(e)}")
+
+class GetLiCaiItemRequest(BaseModel):
+    item: str
+
+@app.post("/get_licai_item", tags=["licai"])
+async def get_licai_item(query: GetLiCaiItemRequest):
+    item = query.item
+    # 如果item为空，返回空列表
+    if not item:
+        return { "data": [] }
+    TABLE_NAME = "hxb_licai_kv"
+    response = supabase.table(TABLE_NAME).select("*").eq("item", item).execute()
+    return { "data": response.data }
+
+class UpdateLiCaiItemRequest(BaseModel):
+    item: str
+    key: str
+    value: str
+
+@app.post("/update_licai_item", tags=["licai"])
+async def update_licai_item(query: UpdateLiCaiItemRequest):
+    item = query.item
+    key = query.key
+    value = query.value
+    # 如果item为空，返回错误
+    if not item:
+        raise HTTPException(status_code=400, detail="item is required")
+    # 如果key为空，返回错误
+    if not key:
+        raise HTTPException(status_code=400, detail="key is required")
+    # 如果value是空，则不更新，直接返回成功
+    if value is None:
+        return {"status": "success", "message": "value is None, no update performed"}
+    # 通过supabase的upsert功能，更新或者插入数据
+    data = {
+        "item": item,
+        "key": key,
+        "value": value
+    }
+    TABLE_NAME = "hxb_licai_kv"
+    response = supabase.table(TABLE_NAME).upsert(data).execute()
+    return response
 
 if __name__ == "__main__":
     import uvicorn
