@@ -9,8 +9,8 @@ if env is None:
 
 cfg = Config(env)
 
-url: str = cfg.SUPABASE_URL
-key: str = cfg.SUPABASE_KEY
+url: str = os.getenv("SUPABASE_URL")
+key: str = os.getenv("SUPABASE_KEY")
 print("url = ", url)
 print("key = ", key)
 print("ratio = ", cfg.TRAFFIC_RATIO)
