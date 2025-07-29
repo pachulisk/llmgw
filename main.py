@@ -3,8 +3,9 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from litellm import completion
 from dotenv import load_dotenv
-from supa import supabase
 load_dotenv()
+from supa import supabase
+
 import os
 
 app = FastAPI(title="DeepSeek 流式对话接口", version="1.0")
